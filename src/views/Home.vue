@@ -1,18 +1,33 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>All Neighborhoods</h1>
+    <router-link to="/Signup">Signup</router-link> |
+    <router-link to="/Login">Log In</router-link>
+    <div>
+      <router-link to="/Attractions">Attractions</router-link>
+    </div>
+    <div v-for="neighborhood in neighborhoods">
+      <h3>{{ neighborhood.name }}</h3>
+      <h5>view attractions {{ neighborhood.attractions.length }}</h5>
+      <router-link v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import axios from "axios";
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
-}
+  data: function() {
+    return {
+      neighborhoods: []
+    };
+  },
+  created: function() {
+    axios.get("/api/neighborhoods").then(response => {
+      this.neighborhoods = response.data;
+    });
+  },
+  methods: {}
+};
 </script>
