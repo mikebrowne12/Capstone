@@ -8,6 +8,12 @@
         <button v-on:click="createVote(attraction, true)">YES</button>
         <button v-on:click="createVote(attraction, false)">NO</button>
       </div>
+      <div v-for="attraction in neighborhood.attractions">
+        <div v-for="vote in attraction.votes">
+          <h5>Votes: {{ vote.value === true }}</h5>
+        </div>
+        <!-- <h5>Votes: {{ attraction.votes }}</h5> -->
+      </div>
     </div>
     <div>
       <router-link to="/">Back</router-link>
@@ -34,11 +40,9 @@ export default {
   },
   methods: {
     createVote: function(attraction, value) {
-      // console.log("This worked!", attraction.name, attraction.id, value);
-      // axios.post to create a vote, params value and attraction.id
+
       var params = { user_id: this.neighborhood.user.id, attraction_id: attraction.id, value: value};
       console.log("createVote", params);
-      // Create a vote using POST "/api/votes" with params {attraction_id, value}
 
       axios.post("/api/votes", params).then(response => {
         this.votes = response.data;
