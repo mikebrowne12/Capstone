@@ -12,10 +12,10 @@
         <h5>Number of votes: {{ attraction.votes.length }}</h5>
         <h5>Upvotes: {{ countUpvotes(attraction.votes) }}</h5>
         <h5>Downvotes: {{ countDownvotes(attraction.votes) }}</h5>
-        <div v-for="vote in attraction.votes">
+<!--         <div v-for="vote in attraction.votes">
           <h5>Votes: {{ vote.value }}</h5>
           <h5>Counter: {{ vote.count }}</h5>
-        </div>
+        </div> -->
       </div>
     </div>
     <div>

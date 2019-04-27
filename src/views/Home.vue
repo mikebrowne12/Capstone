@@ -1,8 +1,9 @@
 <template>
   <div class="home">
     <h1>All Neighborhoods</h1>
-    <router-link to="/Signup">Signup</router-link> |
-    <router-link to="/Login">Log In</router-link>
+    <router-link to="/Signup" v-if="!jwt">Signup</router-link> |
+    <router-link to="/Login" v-if="!jwt">Login</router-link> |
+    <router-link to="/Logout" v-if="jwt">Logout</router-link>
     <div>
       <router-link to="/Attractions">Attractions</router-link>
     </div>
@@ -20,14 +21,18 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      neighborhoods: []
+      neighborhoods: [], 
+      jwt: null
     };
   },
   created: function() {
     axios.get("/api/neighborhoods").then(response => {
       this.neighborhoods = response.data;
     });
+    this.jwt = localStorage.jwt;
+    console.log("My jwt is", this.jwt);
   },
+
   methods: {}
 };
 </script>
