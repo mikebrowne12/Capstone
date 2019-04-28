@@ -8,9 +8,12 @@
       <router-link to="/Attractions">Attractions</router-link>
     </div>
     <div v-for="neighborhood in neighborhoods">
-      <h3>{{ neighborhood.name }}</h3>
-      <h5>view attractions {{ neighborhood.attractions.length }}</h5>
+      <h2>{{ neighborhood.name }}</h2>
+      <h5>Number of attractions {{ neighborhood.attractions.length }}</h5>
       <router-link v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
+      <br>
+      <br>
+      <br>
     </div>
   </div>
 </template>
@@ -21,7 +24,7 @@ import axios from "axios";
 export default {
   data: function() {
     return {
-      neighborhoods: [], 
+      neighborhoods: [],
       jwt: null
     };
   },
@@ -33,6 +36,6 @@ export default {
     console.log("My jwt is", this.jwt);
   },
 
-  methods: {}
+  methods: {}, 
 };
 </script>

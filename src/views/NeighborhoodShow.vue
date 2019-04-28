@@ -12,10 +12,6 @@
         <h5>Number of votes: {{ attraction.votes.length }}</h5>
         <h5>Upvotes: {{ countUpvotes(attraction.votes) }}</h5>
         <h5>Downvotes: {{ countDownvotes(attraction.votes) }}</h5>
-<!--         <div v-for="vote in attraction.votes">
-          <h5>Votes: {{ vote.value }}</h5>
-          <h5>Counter: {{ vote.count }}</h5>
-        </div> -->
       </div>
     </div>
     <div>
@@ -35,8 +31,6 @@ export default {
       votes: []
     }; 
   },
-
-
   created: function() {
     axios.get("/api/neighborhoods/" + this.$route.params.id).then(response => {
       this.neighborhood = response.data;
@@ -45,11 +39,12 @@ export default {
   },
   methods: {
     createVote: function(attraction, value) {
+      // user_id: this.neighborhood.user.id,
 
-      var params = { user_id: this.neighborhood.user.id, attraction_id: attraction.id, value: value};
+      var params = { attraction_id: attraction.id, value: value};
       console.log("createVote", params); 
 
-      axios.post("/api/votes", params).then(response => {
+      axios.put("/api/votes", params).then(response => {
         this.votes = response.data; 
         console.log("createVote", this.votes.length); 
       }); 
