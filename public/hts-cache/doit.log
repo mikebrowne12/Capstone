@@ -1,0 +1,8 @@
+http://adventurethemes.com/demo/writer/html/v3 -O /Users/michaelbrowne/Actualize/template_download +*adventurethemes.com/* -v
+File generated automatically on Sun, 28 Apr 2019 14:27:01, do NOT edit
+
+To update a mirror, just launch httrack without any parameters
+The existing cache will be used (and modified)
+To have other options, retype all parameters and launch HTTrack
+To continue an interrupted mirror, just launch httrack without any parameters
+

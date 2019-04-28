@@ -25,7 +25,7 @@
         <div class="form-group">
           <label>Neighborhood:</label>
           <select>
-            <option v-for="neighborhood in neighborhoods" v-bind:value="neighborhood.name">{{neighborhood.name}}</option>
+            <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.name">{{neighborhood.name}}</option>
           </select>
         </div>
         <input type="submit" class="btn btn-primary" value="Submit">
@@ -49,9 +49,7 @@ export default {
       passwordConfirmation: "",
       neighborhood: "",
       neighborhoods: [],  
-      errors: [], 
-      sortAttribute: "name", 
-      sortAscending: 1
+      errors: []
     };
   },
   created: function() {
@@ -77,19 +75,7 @@ export default {
         .catch(error => {
           this.errors = error.response.data.errors;
         });
-    },
-    setSortAttribute: function(inputAttribute) {
-      if (this.sortAttribute === inputAttribute) {
-        if (this.sortAscending === 1) {
-          this.sortAscending = -1;
-        } else {
-          this.sortAscending = 1;
-        }
-      } else {
-        this.sortAscending = 1;
-      }
-      this.sortAttribute = inputAttribute;
-    }, 
+    }
   }
 };
 </script>

@@ -5,7 +5,7 @@
       <router-link to="./">Home</router-link>
     </div>
     <div v-for="attraction in attractions">
-      <h3>{{ attraction.name }}</h3>
+      <router-link v-bind:to="`/neighborhoods/${attraction.neighborhood_id}`">{{ attraction.name }}</router-link>
     </div>
   </div>
 </template>
