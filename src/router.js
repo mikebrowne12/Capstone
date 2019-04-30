@@ -6,6 +6,7 @@ import Signup from './views/Signup.vue';
 import Login from "./views/Login.vue"; 
 import Logout from "./views/Logout.vue"; 
 import NeighborhoodsShow from "./views/NeighborhoodShow.vue"; 
+import AttractionShow from "./views/AttractionShow.vue"; 
 
 Vue.use(Router);
 
@@ -22,6 +23,8 @@ export default new Router({
     { path: "/signup", name: "signup", component: Signup}, 
     { path: "/login", name: "login", component: Login}, 
     { path: "/logout", name: "logout", component: Logout},  
-    { path: "/neighborhoods/:id", name: "neighborhoods-show", component: NeighborhoodsShow}
+    { path: "/neighborhoods/:id", name: "neighborhoods-show", component: NeighborhoodsShow}, 
+    { path: "/attractions/:id", name: "attraction-show", component: AttractionShow}
+
   ]
 });

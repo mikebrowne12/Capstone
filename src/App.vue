@@ -58,6 +58,9 @@
             </div> <!--/row -->
 
         </main> <!-- /container -->
+        <main class="container middle-container"> 
+            
+        </main>
   </div>
 </template>
 
