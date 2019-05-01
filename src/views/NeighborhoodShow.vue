@@ -23,7 +23,7 @@
           <h5>Number of votes: {{ countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesNonLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesNonLocal(attraction.votes) }}</h5>
-          <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of Non-locals recommend this attraction</h5>
+          <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of locals recommend this attraction</h5>
         </div>
         <h3>Votes ({{ attraction.votes.length }})</h3>
         <div v-for="vote in attraction.votes">
