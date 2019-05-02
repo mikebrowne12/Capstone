@@ -33,6 +33,7 @@
         <br>
         <br>
       </div>
+      <div class="map" v-bind:id="`map${attraction.id}`"></div>
     </div>
     <div>
       <router-link to="/">Back</router-link>
@@ -40,8 +41,18 @@
   </div>
 </template>
 
+<style>
+.map {
+  height: 300px; width:100%; pointer-events: none; margin-bottom: 1em;
+}
+</style>
+
 <script>
+/* global mapboxgl */
+
 import axios from "axios"; 
+import Vue from 'vue';
+
 
 export default {
   data: function() {
@@ -52,9 +63,49 @@ export default {
       votes: []
     }; 
   },
-  created: function() {
+  mounted: function() {
+
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoicGV0ZXJ4amFuZyIsImEiOiJjam96NnBwZmUycXI4M3FxaTR3aHQwenhkIn0.Fip_rZYF_exdMEDeQTNYoQ";
+
     axios.get("/api/neighborhoods/" + this.$route.params.id).then(response => {
       this.neighborhood = response.data;
+
+      Vue.nextTick(() => {
+        this.neighborhood.attractions.forEach(attraction => {
+          console.log('each attraction', attraction);
+
+          var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+          mapboxClient.geocoding.forwardGeocode({
+            query: attraction.address,
+            // query: 'Wellington, New Zealand',
+            autocomplete: false,
+            limit: 1
+          })
+          .send()
+          .then(function (response) {
+            if (response && response.body && response.body.features && response.body.features.length) {
+                  var feature = response.body.features[0];
+
+                  var map = new mapboxgl.Map({
+                  container: "map" + attraction.id, // container id
+                  style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
+                  center: feature.center, // starting position [lng, lat]
+                  zoom: 16, // starting zoom
+                  pitch: 45
+                }); 
+
+                var popup = new mapboxgl.Popup({ offset: 25 }); 
+
+                var marker = new mapboxgl.Marker()
+                  .setLngLat(feature.center)
+                  .setPopup(popup)
+                  .addTo(map);
+            }
+          });
+        }); 
+      });  
+
       console.log("created", this.neighborhood);
     }); 
   },

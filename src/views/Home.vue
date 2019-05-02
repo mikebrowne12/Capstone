@@ -202,7 +202,7 @@ export default {
       console.log(neighborhoodID); 
       var url = "http://localhost:8080/neighborhoods/" + neighborhoodID; 
       console.log(url); 
-      window.location = url; 
+      window.location.href = url; 
 
       // window.location = "http://localhost:8080/neighborhoods/";
     }
