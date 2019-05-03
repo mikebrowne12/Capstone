@@ -65,8 +65,7 @@ export default {
   },
   mounted: function() {
 
-    mapboxgl.accessToken =
-      "pk.eyJ1IjoicGV0ZXJ4amFuZyIsImEiOiJjam96NnBwZmUycXI4M3FxaTR3aHQwenhkIn0.Fip_rZYF_exdMEDeQTNYoQ";
+    mapboxgl.accessToken = process.env.VUE_APP_MY_API_KEY; 
 
     axios.get("/api/neighborhoods/" + this.$route.params.id).then(response => {
       this.neighborhood = response.data;

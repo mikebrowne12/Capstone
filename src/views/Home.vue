@@ -76,7 +76,7 @@ export default {
   mounted: function() {
 
 
-    mapboxgl.accessToken = 'pk.eyJ1IjoibWlrZWJyb3duZTEyIiwiYSI6ImNqdWRhc2ttZTB0aGY0NXFyeDNubWlzMG8ifQ.2mhGueCHEVFZM2rURR4e0A';
+    mapboxgl.accessToken = process.env.VUE_APP_MY_API_KEY;
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
