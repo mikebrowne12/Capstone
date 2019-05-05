@@ -1,16 +1,19 @@
 <template>
   <div class="neighborhoods-show">
-    <h2>Neighborhood: {{ neighborhood.name }}</h2>
-    
+    <h2>{{ neighborhood.name }}</h2>
+    <br>
     <div v-for="attraction in neighborhood.attractions">
 <!--       <router-link v-bind:to="`/attractions/${attraction.id}`">{{ attraction.name }}</router-link> -->
-      <p>Attractions: {{ attraction.name }}</p> 
-      <p>Would you recommend this attraction?</p> 
+      <h3>Attractions: {{ attraction.name }}</h3> 
+      <h4>{{ attraction.address }}</h4>
+      <br>
+      <h4>Would you recommend this attraction?</h4> 
       <div>
         <button v-on:click="createVote(attraction, true)">YES</button>
         <button v-on:click="createVote(attraction, false)">NO</button>
 
-
+        <br>
+        <br>
         <div>
           <h3>Number of Local Votes</h3>
           <h5>Number of votes: {{ countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes) }}</h5>
@@ -92,7 +95,7 @@ export default {
                   center: feature.center, // starting position [lng, lat]
                   zoom: 16, // starting zoom
                   pitch: 45
-                }); 
+                });
 
                 var popup = new mapboxgl.Popup({ offset: 25 }); 
 

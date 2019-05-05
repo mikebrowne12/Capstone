@@ -8,6 +8,10 @@
         <small>Text credit: <a target='_blank' href='http://www.nycgo.com/neighborhoods'>nycgo.com</a></small>
       </div>
     </div>
+    <div>
+      <h4>Current Chicago Weather: {{ weather.main.temp }} F and {{ weather.weather[0].description }}</h4>
+    </div>
+    <br>
     <p>Don't know which neighborhood you want to visit, let us choose a random one for you!</p>
     <button v-on:click="randomNeighborhood()">Random</button>
     <h1>All Neighborhoods</h1>
@@ -72,6 +76,14 @@ export default {
   data: function() {
     return {
       neighborhoods: [],
+      weather: {
+        weather: [{
+          description: ''
+        }],
+        main: {
+          temp: 0
+        }
+      }, 
       jwt: null,
       neighborhood_id: ""
     };
@@ -83,6 +95,10 @@ export default {
     });
     this.jwt = localStorage.jwt;
     console.log("My jwt is", this.jwt);
+
+    axios.get("/api/weather").then(response => {
+      this.weather = response.data;  
+    }); 
   },
   mounted: function() {
 
