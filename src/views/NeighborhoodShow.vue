@@ -46,7 +46,7 @@
 
 <style>
 .map {
-  height: 300px; width:100%; pointer-events: none; margin-bottom: 1em;
+  height: 500px; width:100%; margin-bottom: 1em;
 }
 </style>
 
@@ -96,6 +96,15 @@ export default {
                   zoom: 16, // starting zoom
                   pitch: 45
                 });
+
+                map.addControl(new mapboxgl.NavigationControl());
+
+                var directions = new MapboxDirections({
+                  accessToken: mapboxgl.accessToken
+                });
+                map.addControl(directions, 'top-left');
+
+                directions.setDestination(attraction.address);
 
                 var popup = new mapboxgl.Popup({ offset: 25 }); 
 
