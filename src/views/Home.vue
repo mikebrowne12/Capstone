@@ -11,7 +11,17 @@
     <p>Don't know which neighborhood you want to visit, let us choose a random one for you!</p>
     <button v-on:click="randomNeighborhood()">Random</button>
     <h1>All Neighborhoods</h1>
+    <br>
+    <h4>Select a Neighborhood to visit</h4>
+      <form v-on:submit.prevent="selectNeighborhood()">
+        <select v-model="neighborhood_id">
+          <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.id">{{neighborhood.name}}</option>
+        </select>
+        <button type="submit">Submit</button>
+      </form>
+    <br>
     <div v-for="neighborhood in orderBy(neighborhoods, 'name')">
+    <!-- <div v-for="neighborhood in neighborhoods"> -->
       <h2>{{ neighborhood.name }}</h2>
       <h5>Number of attractions {{ neighborhood.attractions.length }}</h5>
       <router-link v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
@@ -62,7 +72,8 @@ export default {
   data: function() {
     return {
       neighborhoods: [],
-      jwt: null
+      jwt: null,
+      neighborhood_id: ""
     };
   },
   created: function() {
@@ -205,7 +216,11 @@ export default {
       window.location.href = url; 
 
       // window.location = "http://localhost:8080/neighborhoods/";
+    }, 
+    selectNeighborhood: function() {
+      this.$router.push("/neighborhoods/" + this.neighborhood_id); 
     }
+
   }, 
 
 // var url = '{{ route("admin.edit_school", ":slug") }}';

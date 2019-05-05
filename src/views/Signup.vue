@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label>Neighborhood:</label>
-          <select>
+          <select v-model="neighborhood_name">
             <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.name">{{neighborhood.name}}</option>
           </select>
         </div>
@@ -47,7 +47,7 @@ export default {
       email: "",
       password: "",
       passwordConfirmation: "",
-      neighborhood: "",
+      neighborhood_name: "",
       neighborhoods: [],  
       errors: []
     };
@@ -65,7 +65,7 @@ export default {
         email: this.email,
         password: this.password,
         password_confirmation: this.passwordConfirmation, 
-        neighborhood: this.neighborhood
+        neighborhood: this.neighborhood_name
       };
       axios
         .post("/api/users", params)
