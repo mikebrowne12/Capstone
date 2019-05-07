@@ -7,7 +7,7 @@
           <li class="text-danger" v-for="error in errors">{{ error }}</li>
         </ul>
         <div class="form-group">
-          <label>Name:</label> 
+          <label>Username (no spaces please):</label> 
           <input type="text" class="form-control" v-model="name">
         </div>
         <div class="form-group">
@@ -23,7 +23,7 @@
           <input type="password" class="form-control" v-model="passwordConfirmation">
         </div>
         <div class="form-group">
-          <label>Neighborhood:</label>
+          <label>Neighborhood of Residence:</label>
           <select v-model="neighborhood_name">
             <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.name">{{neighborhood.name}}</option>
           </select>

@@ -1,16 +1,17 @@
 <template>
   <div class="neighborhoods-show">
     <h2>{{ neighborhood.name }}</h2>
+    <input type="hidden" v-model="neighborhood">
     <br>
+<!--     <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.id">{{neighborhood.name}}</option> -->
     <div v-for="attraction in neighborhood.attractions">
-<!--       <router-link v-bind:to="`/attractions/${attraction.id}`">{{ attraction.name }}</router-link> -->
       <h3>Attractions: {{ attraction.name }}</h3> 
       <h4>{{ attraction.address }}</h4>
       <br>
       <h4>Would you recommend this attraction?</h4> 
       <div>
-        <button v-on:click="createVote(attraction, true)">YES</button>
-        <button v-on:click="createVote(attraction, false)">NO</button>
+        <button class='choice' v-on:click="createVote(attraction, true)">YES</button>
+        <button class='choice' v-on:click="createVote(attraction, false)">NO</button>
 
         <br>
         <br>
@@ -26,7 +27,7 @@
           <h5>Number of votes: {{ countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesNonLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesNonLocal(attraction.votes) }}</h5>
-          <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of locals recommend this attraction</h5>
+          <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of non-locals recommend this attraction</h5>
         </div>
         <h3>Votes ({{ attraction.votes.length }})</h3>
         <div v-for="vote in attraction.votes">
@@ -34,9 +35,10 @@
         </div>
         <br>
         <br>
-        <br>
       </div>
       <div class="map" v-bind:id="`map${attraction.id}`"></div>
+      <br>
+      <hr>
     </div>
     <div>
       <router-link to="/">Back</router-link>
@@ -47,6 +49,22 @@
 <style>
 .map {
   height: 500px; width:100%; margin-bottom: 1em;
+}
+
+.hr {
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 1px;
+}
+
+.choice {
+  color: red;
+  margin-left: 68px; 
+  size: small;
 }
 </style>
 
@@ -63,7 +81,7 @@ export default {
       user: {}, 
       neighborhood: {}, 
       vote: {}, 
-      votes: []
+      votes: [], 
     }; 
   },
   mounted: function() {
@@ -104,7 +122,8 @@ export default {
                 });
                 map.addControl(directions, 'top-left');
 
-                directions.setDestination(attraction.address);
+                // directions.setDestination(attraction.address);
+                // directions.setDestination(feature.center);
 
                 var popup = new mapboxgl.Popup({ offset: 25 }); 
 
@@ -127,8 +146,11 @@ export default {
       var params = { attraction_id: attraction.id, value: value};
       console.log("createVote", params); 
 
-      axios.put("/api/votes", params).then(response => {
+      axios.patch("/api/votes", params).then(response => {
         this.votes = response.data; 
+        location.reload(true);
+
+        // this.$router.push("/neighborhoods/" + this.neighborhood.id);
         console.log("createVote", this.votes.length); 
       }); 
        

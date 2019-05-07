@@ -1,5 +1,7 @@
 <template>
   <div class="home">
+    <h1 class='title'>Windy City Vibes</h1>
+    <br>
     <div id='map'></div>
     <div class='map-overlay-container'>
       <div class='map-overlay'>
@@ -12,7 +14,7 @@
       <h4>Current Chicago Weather: {{ weather.main.temp }} F and {{ weather.weather[0].description }}</h4>
     </div>
     <br>
-    <p>Don't know which neighborhood you want to visit, let us choose a random one for you!</p>
+    <p>Don't know which neighborhood you want to visit, let us choose one for you!</p>
     <button v-on:click="randomNeighborhood()">Random</button>
     <h1>All Neighborhoods</h1>
     <br>
@@ -24,9 +26,10 @@
         <button type="submit">Submit</button>
       </form>
     <br>
-    <div v-for="neighborhood in orderBy(neighborhoods, 'name')">
+    <div class='neighborhood' v-for="neighborhood in neighborhoods">
     <!-- <div v-for="neighborhood in neighborhoods"> -->
       <h2>{{ neighborhood.name }}</h2>
+      <h4>{{ neighborhood.id }}</h4>
       <h5>Number of attractions {{ neighborhood.attractions.length }}</h5>
       <router-link v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
       <br>
@@ -43,10 +46,12 @@
 
   .map-overlay-container {
   position: absolute;
-  width: 25%;
-  top: 0;
-  left: 200px;
-  padding: 10px;
+  width: 45%;
+  top: 35px;
+  left: 505px;
+  padding: 50px;
+  border: 20px; 
+  border-color: black; 
   z-index: 1;
   }
    
@@ -61,7 +66,18 @@
   .map-overlay h2,
   .map-overlay p {
   margin: 0 0 10px;
-}
+  }
+
+  .title {
+    font-size: 56px; 
+    color: navy;
+    font-style: sans-serif; 
+  }
+
+  .neighborhood {
+    margin-left: 200px;
+  }
+
 </style>
 
 <script>
