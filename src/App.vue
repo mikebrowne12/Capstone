@@ -66,8 +66,4 @@
 
 <style>
 
-#button {
-    color: red;
-}
-
 </style>

@@ -1,38 +1,38 @@
 <template>
   <div class="neighborhoods-show">
-    <h2>{{ neighborhood.name }}</h2>
+    <h2 class='neighborhoodName'>{{ neighborhood.name }}</h2>
     <input type="hidden" v-model="neighborhood">
     <br>
 <!--     <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.id">{{neighborhood.name}}</option> -->
     <div v-for="attraction in neighborhood.attractions">
-      <h3>Attractions: {{ attraction.name }}</h3> 
-      <h4>{{ attraction.address }}</h4>
+      <h3 class='attraction'>Attractions: {{ attraction.name }}</h3> 
+      <h4 class='attraction'>{{ attraction.address }}</h4>
       <br>
-      <h4>Would you recommend this attraction?</h4> 
-      <div>
-        <button class='choice' v-on:click="createVote(attraction, true)">YES</button>
-        <button class='choice' v-on:click="createVote(attraction, false)">NO</button>
+      <h4 class='vote'>Would you recommend this attraction?</h4> 
+      <div class='vote'>
+        <button class='choiceYes' v-on:click="createVote(attraction, true)">YES</button>
+        <button class='choiceNo' v-on:click="createVote(attraction, false)">NO</button>
 
         <br>
         <br>
-        <div>
+        <div class='vote'>
           <h3>Number of Local Votes</h3>
           <h5>Number of votes: {{ countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesLocal(attraction.votes) }}</h5>
           <h5>{{ (countUpvotesLocal(attraction.votes)/(countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes))) * 100}} % of locals recommend this attraction</h5>
         </div>
-        <div>
+        <div class='vote'>
           <h3>Number of Non-Local Votes</h3>
           <h5>Number of votes: {{ countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesNonLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesNonLocal(attraction.votes) }}</h5>
           <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of non-locals recommend this attraction</h5>
         </div>
-        <h3>Votes ({{ attraction.votes.length }})</h3>
-        <div v-for="vote in attraction.votes">
+        <h3 class='vote'>Total Votes: {{ attraction.votes.length }}</h3>
+<!--         <div v-for="vote in attraction.votes">
           {{ vote }}
-        </div>
+        </div> -->
         <br>
         <br>
       </div>
@@ -48,7 +48,9 @@
 
 <style>
 .map {
-  height: 500px; width:100%; margin-bottom: 1em;
+  height: 500px; 
+  width:100%; 
+  margin-bottom: 1em;
 }
 
 .hr {
@@ -61,10 +63,29 @@
   border-width: 1px;
 }
 
-.choice {
-  color: red;
-  margin-left: 68px; 
+.neighborhoodName {
+  text-align: center; 
+}
+
+.choiceYes {
+  color: black;
+  text-align: center;  
   size: small;
+}
+
+.choiceNo {
+  color: black;
+  text-align: center;
+  margin-left: 20px;  
+  size: small;
+}
+
+.attraction {
+  text-align: center; 
+}
+
+.vote {
+  text-align: center;
 }
 </style>
 
@@ -93,7 +114,7 @@ export default {
 
       Vue.nextTick(() => {
         this.neighborhood.attractions.forEach(attraction => {
-          console.log('each attraction', attraction);
+          // console.log('each attraction', attraction);
 
           var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
           mapboxClient.geocoding.forwardGeocode({
@@ -120,9 +141,13 @@ export default {
                 var directions = new MapboxDirections({
                   accessToken: mapboxgl.accessToken
                 });
-                map.addControl(directions, 'top-left');
 
-                // directions.setDestination(attraction.address);
+                console.log('each attraction', attraction); 
+                directions.setDestination(attraction.address);
+
+                map.addControl(directions, 'top-left');
+                
+                // $('#map'+attraction.id) > $('#mapboxgl-ctrl-geocoder') > $('input').val(attraction.address); 
                 // directions.setDestination(feature.center);
 
                 var popup = new mapboxgl.Popup({ offset: 25 }); 

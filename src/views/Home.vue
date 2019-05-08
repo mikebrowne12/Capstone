@@ -10,16 +10,19 @@
         <small>Text credit: <a target='_blank' href='http://www.nycgo.com/neighborhoods'>nycgo.com</a></small>
       </div>
     </div>
-    <div>
+    <div class='weather'>
       <h4>Current Chicago Weather: {{ weather.main.temp }} F and {{ weather.weather[0].description }}</h4>
     </div>
     <br>
-    <p>Don't know which neighborhood you want to visit, let us choose one for you!</p>
-    <button v-on:click="randomNeighborhood()">Random</button>
-    <h1>All Neighborhoods</h1>
+    <div class='randomizeNeighborhood'>
+      <p>Don't know which neighborhood you want to visit, let us choose one for you!</p>
+      <button v-on:click="randomNeighborhood()">Random</button>  
+    </div>
     <br>
-    <h4>Select a Neighborhood to visit</h4>
-      <form v-on:submit.prevent="selectNeighborhood()">
+    <h1 class='neighborhoodTitle'>All Neighborhoods</h1>
+    <br>
+    <h4 class='h4Home'>Select a Neighborhood to visit</h4>
+      <form class='neighborhoodButton' v-on:submit.prevent="selectNeighborhood()">
         <select v-model="neighborhood_id">
           <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.id">{{neighborhood.name}}</option>
         </select>
@@ -41,6 +44,11 @@
 
 <style>
   body { margin:0; padding:0;}
+
+  .weather {
+    text-align: center; 
+  }
+
   #map { height:500px; width:100%; pointer-events: none; margin-bottom: 1em; }
 
 
@@ -50,7 +58,7 @@
   top: 35px;
   left: 505px;
   padding: 50px;
-  border: 20px; 
+  border: 50px; 
   border-color: black; 
   z-index: 1;
   }
@@ -71,11 +79,27 @@
   .title {
     font-size: 56px; 
     color: navy;
-    font-style: sans-serif; 
+    font-family: georgia; 
+  }
+
+  .randomizeNeighborhood {
+    text-align: center; 
+  }
+
+  .neighborhoodTitle {
+    text-align: center; 
+  }
+
+  .neighborhoodButton {
+    text-align: center;
   }
 
   .neighborhood {
-    margin-left: 200px;
+    text-align: center; 
+  }
+
+  .h4Home {
+    text-align: center; 
   }
 
 </style>
@@ -123,7 +147,8 @@ export default {
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-74.0315, 40.6989],
+      // center: [-74.0315, 40.6989],
+      center: [-87.8253, 41.8144],
       maxZoom: 16,
       minZoom: 9,
       zoom: 9.68
@@ -133,6 +158,15 @@ export default {
     var description = document.getElementById('location-description');
 
     var locations = [{
+      "title": "Neighborhoods of Chicago",
+      "description": "New York City is made up of five boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island. Each one has enough attractions—and enough personality—to be a city all its own.",
+      "camera": {
+        center: [-87.8253, 41.8144],
+        zoom: 0,
+        bearing: 0,
+        pitch: 0
+      }
+    }, {
       "id": "2",
       "title": "Loop",
       "description": "This is where hip-hop was born, where the Yankees became a dynasty and where you can find New York City's leading zoo and botanical garden.",
@@ -167,24 +201,6 @@ export default {
         center: [-87.7348, 41.8780],
         bearing: 36,
         zoom: 11.37
-      }
-    }, {
-      "id": "5",
-      "title": "Lakeview",
-      "description": "Take a free ferry ride to an island getaway filled with historic architecture, stunning views, gardens and many family-friendly attractions.",
-      "camera": {
-        center: [-87.6628, 41.9471],
-        bearing: 28.4,
-        zoom: 11.64
-      }
-    }, {
-      "title": "Neighborhoods of Chicago",
-      "description": "New York City is made up of five boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island. Each one has enough attractions—and enough personality—to be a city all its own.",
-      "camera": {
-        center: [-87.8253, 41.8144],
-        zoom: 0,
-        bearing: 0,
-        pitch: 0
       }
     }];
 
