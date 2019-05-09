@@ -1,17 +1,20 @@
 <template>
   <div class="neighborhoods-show">
+    <h1 class='titleShow'>Windy City Vibes</h1>
+    <br>
+    <br>
     <h2 class='neighborhoodName'>{{ neighborhood.name }}</h2>
     <input type="hidden" v-model="neighborhood">
-    <br>
+    <hr>
 <!--     <option v-for="neighborhood in orderBy(neighborhoods, 'name')" v-bind:value="neighborhood.id">{{neighborhood.name}}</option> -->
     <div v-for="attraction in neighborhood.attractions">
-      <h3 class='attraction'>Attractions: {{ attraction.name }}</h3> 
+      <h2 class='attraction'>{{ attraction.name }}</h2> 
       <h4 class='attraction'>{{ attraction.address }}</h4>
       <br>
       <h4 class='vote'>Would you recommend this attraction?</h4> 
       <div class='vote'>
-        <button class='choiceYes' v-on:click="createVote(attraction, true)">YES</button>
-        <button class='choiceNo' v-on:click="createVote(attraction, false)">NO</button>
+        <button class='btn-primary' v-on:click="createVote(attraction, true)">YES</button>
+        <button class='btn-primary' v-on:click="createVote(attraction, false)">NO</button>
 
         <br>
         <br>
@@ -20,14 +23,14 @@
           <h5>Number of votes: {{ countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesLocal(attraction.votes) }}</h5>
-          <h5>{{ (countUpvotesLocal(attraction.votes)/(countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes))) * 100}} % of locals recommend this attraction</h5>
+          <h5>{{ ((countUpvotesLocal(attraction.votes)/(countUpvotesLocal(attraction.votes) + countDownvotesLocal(attraction.votes))) * 100).toFixed(2)}} % of locals recommend this attraction</h5>
         </div>
         <div class='vote'>
           <h3>Number of Non-Local Votes</h3>
           <h5>Number of votes: {{ countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes) }}</h5>
           <h5>Upvotes: {{ countUpvotesNonLocal(attraction.votes) }}</h5>
           <h5>Downvotes: {{ countDownvotesNonLocal(attraction.votes) }}</h5>
-          <h5>{{ (countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100}} % of non-locals recommend this attraction</h5>
+          <h5>{{ ((countUpvotesNonLocal(attraction.votes)/(countUpvotesNonLocal(attraction.votes) + countDownvotesNonLocal(attraction.votes))) * 100).toFixed(2)}} % of non-locals recommend this attraction</h5>
         </div>
         <h3 class='vote'>Total Votes: {{ attraction.votes.length }}</h3>
 <!--         <div v-for="vote in attraction.votes">
@@ -41,12 +44,19 @@
       <hr>
     </div>
     <div>
-      <router-link to="/">Back</router-link>
+      <router-link class='homeButton' to="/">Back to Home Page</router-link>
     </div>
   </div>
 </template>
 
 <style>
+.titleShow {
+  text-align: center; 
+  font-size: 56px; 
+  color: navy;
+  font-family: georgia;
+}
+
 .map {
   height: 500px; 
   width:100%; 
@@ -64,7 +74,8 @@
 }
 
 .neighborhoodName {
-  text-align: center; 
+  text-align: center;
+  font-family: Times New Roman;   
 }
 
 .choiceYes {
@@ -86,11 +97,16 @@
 
 .vote {
   text-align: center;
+  font-size: 20px;
+}
+
+.homeButton {
+  font-size: 12px; 
 }
 </style>
 
 <script>
-/* global mapboxgl */
+/* global mapboxgl, MapboxDirections, mapboxSdk */
 
 import axios from "axios"; 
 import Vue from 'vue';
@@ -116,19 +132,19 @@ export default {
         this.neighborhood.attractions.forEach(attraction => {
           // console.log('each attraction', attraction);
 
-          var mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+          let mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
           mapboxClient.geocoding.forwardGeocode({
             query: attraction.address,
             // query: 'Wellington, New Zealand',
             autocomplete: false,
             limit: 1
           })
-          .send()
-          .then(function(response) {
-            if (response && response.body && response.body.features && response.body.features.length) {
-                  var feature = response.body.features[0];
+            .send()
+            .then(function(response) {
+              if (response && response.body && response.body.features && response.body.features.length) {
+                let feature = response.body.features[0];
 
-                  var map = new mapboxgl.Map({
+                attraction.map = new mapboxgl.Map({
                   container: "map" + attraction.id, // container id
                   style: "mapbox://styles/mapbox/streets-v11", // stylesheet location
                   center: feature.center, // starting position [lng, lat]
@@ -136,28 +152,28 @@ export default {
                   pitch: 45
                 });
 
-                map.addControl(new mapboxgl.NavigationControl());
+                attraction.map.addControl(new mapboxgl.NavigationControl());
 
-                var directions = new MapboxDirections({
+                attraction.directions = new MapboxDirections({
                   accessToken: mapboxgl.accessToken
                 });
 
-                console.log('each attraction', attraction); 
-                directions.setDestination(attraction.address);
+                console.log('each attraction', attraction.address); 
+                // attraction.directions.setDestination(attraction.address);
 
-                map.addControl(directions, 'top-left');
-                
+                attraction.map.addControl(attraction.directions, 'top-left');
+
                 // $('#map'+attraction.id) > $('#mapboxgl-ctrl-geocoder') > $('input').val(attraction.address); 
                 // directions.setDestination(feature.center);
 
-                var popup = new mapboxgl.Popup({ offset: 25 }); 
+                let popup = new mapboxgl.Popup({ offset: 25 }); 
 
-                var marker = new mapboxgl.Marker()
+                let marker = new mapboxgl.Marker()
                   .setLngLat(feature.center)
                   .setPopup(popup)
-                  .addTo(map);
-            }
-          });
+                  .addTo(attraction.map);
+              }
+            });
         }); 
       });  
 
@@ -168,7 +184,7 @@ export default {
     createVote: function(attraction, value) {
       // user_id: this.neighborhood.user.id,
 
-      var params = { attraction_id: attraction.id, value: value};
+      let params = { attraction_id: attraction.id, value: value};
       console.log("createVote", params); 
 
       axios.patch("/api/votes", params).then(response => {
@@ -181,7 +197,7 @@ export default {
        
     },
     countUpvotesLocal: function(votes) {
-      var count = 0;
+      let count = 0;
       votes.forEach(vote => {
         if (vote.value && vote.is_local === true) {
           count += 1;
@@ -191,7 +207,7 @@ export default {
       //return votes.reduce((count, vote) => count + (vote.value ? 1 : 0), 0);
     },
     countUpvotesNonLocal: function(votes) {
-      var count = 0;
+      let count = 0;
       votes.forEach(vote => {
         if (vote.value && vote.non_local === true) {
           count += 1;
@@ -201,7 +217,7 @@ export default {
       //return votes.reduce((count, vote) => count + (vote.value ? 1 : 0), 0);
     },
     countDownvotesLocal: function(votes) {
-      var count = 0;
+      let count = 0;
       votes.forEach(vote => {
         if (!vote.value && vote.is_local === true) {
           count += 1;
@@ -210,7 +226,7 @@ export default {
       return count;
     }, 
     countDownvotesNonLocal: function(votes) {
-      var count = 0;
+      let count = 0;
       votes.forEach(vote => {
         if (!vote.value && vote.non_local === true) {
           count += 1;

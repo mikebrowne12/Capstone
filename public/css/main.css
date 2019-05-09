@@ -670,6 +670,11 @@ ol li {
 .btn-primary {
   background: #4761e2;
   color: #fff;
+  text-align: center;
+  margin-left: 10px; 
+  padding-left: 10px; 
+  padding-right: 10px; 
+  font-size: 12px;
   font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 /* line 16, ../sass/partials/_bootstrap-components.sass */

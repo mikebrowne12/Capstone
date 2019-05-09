@@ -7,13 +7,16 @@
       <div class='map-overlay'>
         <h2 id='location-title'></h2>
         <p id='location-description'></p>
-        <small>Text credit: <a target='_blank' href='http://www.nycgo.com/neighborhoods'>nycgo.com</a></small>
+        <small>Text credit: <a target='_blank' href='http://www.nycgo.com/neighborhoods'>chicago.com</a></small>
       </div>
     </div>
-    <div class='weather'>
-      <h4>Current Chicago Weather: {{ weather.main.temp }} F and {{ weather.weather[0].description }}</h4>
+    <div>
+      <h4 class='weatherHeader'>Current Chicago Weather</h4> 
+      <h4 class='weather'>{{ weather.main.temp }}° F</h4>
+      <h4 class='weather'>{{ weather.weather[0].description }}</h4>
     </div>
     <br>
+    <br/>  
     <div class='randomizeNeighborhood'>
       <p>Don't know which neighborhood you want to visit, let us choose one for you!</p>
       <button v-on:click="randomNeighborhood()">Random</button>  
@@ -29,12 +32,11 @@
         <button type="submit">Submit</button>
       </form>
     <br>
-    <div class='neighborhood' v-for="neighborhood in neighborhoods">
+    <div class='neighborhood' v-for="neighborhood in orderBy(neighborhoods, 'name')">
     <!-- <div v-for="neighborhood in neighborhoods"> -->
       <h2>{{ neighborhood.name }}</h2>
-      <h4>{{ neighborhood.id }}</h4>
       <h5>Number of attractions {{ neighborhood.attractions.length }}</h5>
-      <router-link v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
+      <router-link class='exploreNeighborhood' v-bind:to="`/neighborhoods/${neighborhood.id}`">Explore Neighborhood</router-link>
       <br>
       <br>
       <br>
@@ -46,7 +48,13 @@
   body { margin:0; padding:0;}
 
   .weather {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .weatherHeader {
     text-align: center; 
+    font-weight: bold; 
   }
 
   #map { height:500px; width:100%; pointer-events: none; margin-bottom: 1em; }
@@ -96,10 +104,15 @@
 
   .neighborhood {
     text-align: center; 
+    font-size: 14px; 
   }
 
   .h4Home {
     text-align: center; 
+  }
+
+  .exploreNeighborhood {
+    font-size: 12px; 
   }
 
 </style>
@@ -159,7 +172,7 @@ export default {
 
     var locations = [{
       "title": "Neighborhoods of Chicago",
-      "description": "New York City is made up of five boroughs: the Bronx, Brooklyn, Manhattan, Queens and Staten Island. Each one has enough attractions—and enough personality—to be a city all its own.",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
       "camera": {
         center: [-87.8253, 41.8144],
         zoom: 0,
@@ -169,7 +182,7 @@ export default {
     }, {
       "id": "2",
       "title": "Loop",
-      "description": "This is where hip-hop was born, where the Yankees became a dynasty and where you can find New York City's leading zoo and botanical garden.",
+      "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
       "camera": {
         center: [-87.6378, 41.8790], 
         zoom: 12.21,
@@ -178,7 +191,7 @@ export default {
     }, {
       "id": "3",
       "title": "Logan Square",
-      "description": "No matter how hip it looks on TV, NYC's most populous borough is best experienced in person. Read on to find out about live music, Prospect Park, Nets basketball and more.",
+      "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
       "camera": {
         center: [-87.7268, 41.9228],
         bearing: -8.9,
@@ -187,7 +200,7 @@ export default {
     }, {
       "id": "1",
       "title": "Hyde Park",
-      "description": "Even if you think you know Manhattan—its world-class museums, fine dining and unforgettable views—the borough always has something new and exciting in store.",
+      "description": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.",
       "camera": {
         center: [-87.5948, 41.7942],
         bearing: 25.3,
@@ -196,7 +209,7 @@ export default {
     }, {
       "id": "4",
       "title": "West Garfield Park",
-      "description": "Taste food from around the globe, watch Mets baseball and US Open tennis, see cutting-edge art and more in one of the world's most diverse places.",
+      "description": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
       "camera": {
         center: [-87.7348, 41.8780],
         bearing: 36,

@@ -28,7 +28,7 @@
 
                     <div class="site-info">
                         <div class="primary-info">
-                            <h1>Explore Chicago Neighborhoods</h1>
+                            <h1 class='sideTitle'>Explore Chicago Neighborhoods</h1>
                             <p>A fun app that let's you explore restaurants and sights throughout the Windy City </p>
 
                             <p>Content is king</p>
